@@ -68,5 +68,43 @@ column_mean = A.mean(0)
 8. **On a créé un vecteur numpy et on l'a stocké dans la variable v1. Créer un vecteur de boolean numpy (qu'on appellera mask) qui contiendra True si la valeur est strictement positive et False sinon. A l'aide du mask. Récupérer les valeurs positives de v1 et les stocker dans la variable positive_v1.**
 
 ```python
+import numpy as np
+v1 = np.random.randint(-10, 10, 10)
+
+mask = v1 > 0
+positive_v1 = v1[mask]
+```
+
+9. **Sans utiliser de boucle for, coder la fonction vector_threshold(numpy_vector, threshold) qui seuil  le vecteur numpy numpy_vector. C'est à dire que toute les valeurs du vecteur au dessus de threshold sont raméne à threshold. Par exemple r = vector_threshold(np.array([1, 2, 3]), 2) retournera [1, 2, 2]**
+
+```python
+import numpy as np
+
+def vector_threshold(numpy_vector, threshold):
+    return np.where(numpy_vector > threshold, threshold, numpy_vector)
+```
+
+10. **Sans utiliser de boucles for, coder la fonction np_even_values(vector) qui renvoie toutes les valeurs paire d'un vecteur numpy de nombre. Exemple: Si on appelle np_even_values() sur [1,2,3,4,5,6], le resultat doit être [2,4,6]**
+
+```python
+def np_even_values(vector):
+    return vector[vector % 2 == 0]
+```
+
+11. **Comment fonctionne un mask et quel est son utilité ?**
+
+Un mask est un vecteur permettant de filtrer les valeurs d'un vecteur donné, il sera composé de valeurs True et False déterminant si la condition de filtrage a été respectée ou non pour chaque valeur d'un vecteur
+
+12. **Without using np.diff or a for loop or a while loop, code a function differences(values) which takes as input a vector v = [v0, v1, v2, v3, ..., vn] and which returns a vector w = [w0, w1, w2, w3, ..., wn] with wi = vi + 1 - vi. Example : v = np.array([1, 3, 2, 3])**
+**differences(v) should return [2, -1, 1]**
+
+```python
+def differences(values):
+    return values[1:len(values)] - values[0:len(values)-1]
+```
+
+13. **2 arrays a et b de dimensions (9,16) ont été crées dans votre environnement. A l'aide de la méthode stack de numpy: Stackez les ensemble pour obtenir une variable X de dimensions (9,16,2). Une fois X validé, créez une variable X2 de dimension (2,9,16) en vous servant uniquement de X ou de variables tampons. Pas a ni b. Faites en sorte que les variables de a soit toujours placées avant celles de b, peu importe la dimension.**
+
+```python
 
 ```
