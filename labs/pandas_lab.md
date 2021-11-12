@@ -64,15 +64,16 @@ selected_lines = df[(df['Age'] <= 20) & (df['Salary'] >= 2000)]
 7. **Vous arrivez dans une petite agence immobilière travaillant à l'ancienne qui utilise encore des fichiers à plat pour garder l'historique de ses biens. Une famille nombreuse est cliente de cette dernière et vous demande une maison avec au moins trois chambres. Elle dispose d'un budget de 350000 €. Charger le dataset house_prices.csv à l'aide de pandas. Le dataset contient les colonnes suivantes : 'size', 'nb_rooms', 'price'. A l'aide d'un mask récupérer toutes les lignes du dataframe correspondant à la demande de la famille. Stocker le resultat dans la variable big_family_houses**
 
 ```python
-import pandas as pd
+import pandas as pd 
 import numpy as np
 
 df = pd.read_csv('house_prices.csv')
-m = (df['nb_rooms'] < 3) | (df['price'] > 350000)
-df = df.mask(m, None)
-df['price'] = df['price'].astype(np.float)
-df['size'] = df['size'].astype(np.float)
-big_family_houses = df.dropna()
+
+# ~ : not 
+mask = ~((df['nb_rooms'] >= 3) & (df['price'] <= 350000))
+big_family_houses = df.mask(mask).dropna()
+big_family_houses['nb_rooms'] = big_family_houses['nb_rooms'].astype(int)
+big_family_houses['garden'] = big_family_houses['garden'].astype(int)
 ```
 
 8. **Charger le fichier house_size_bedrooms_orientation_garden.csv qui contient des données à propos de maisons et le stocker dans la variable df. Ce fichier contient les colonnes ['size', 'bedrooms', 'orientation', 'garden' ]. La colonne garden prend comme valeurs possibles 0 ou 1. La colonne orientation prend comme valeurs possibles : Nord, Sud, Est, Ouest. A l'aide de np.log, créer une nouvelle colonne log_size qui contient log(1 + size). Ajouter au dataframe  df,  la colonne south_garden. Elle doit valoir 1 si la maison est orientée Sud et a un jardin et 0 sinon.**
@@ -83,7 +84,7 @@ import numpy as np
 
 df = pd.read_csv('house_size_bedrooms_orientation_garden.csv')
 df['log_size'] = df['size'].apply(lambda x: np.log(1 + x))
-df['south_garden'] = (df['orientation'] == 'Sud').astype(np.int)
+df['south_garden'] = ((df['orientation'] == 'Sud') & (df['garden'] == 1)).astype(np.int)
 ```
 
 9. **Vous travaillez dans une banque et vous devez analyser le fichier de transaction ci-dessous.** 
@@ -96,7 +97,7 @@ df['south_garden'] = (df['orientation'] == 'Sud').astype(np.int)
 import pandas as pd
 
 df = pd.read_csv('transactions.csv')
-outputs = df.groupby(['account_sender_name']).sum()
+outputs = df.groupby(['account_receiver_name'])['amount'].sum()
 ```
 
 10. **Charger le dataset tumor_data.csv dans la variable df. La première colonne est la colonne d'index. Il faudra spécifier le paramètre index_col lors du chargement avec read_csv. Les deux autres colonnes sont: size et p53 concentration**
@@ -111,7 +112,18 @@ import numpy as np
 
 df = pd.read_csv('tumor_data.csv', index_col=0)
 df_100 = df.head(100)
-m = (df['size'] < 0.01) | (df['p53 concentration'] < 0.01)
-df = df.astype(np.float).mask(m, None)
+m = ~((df['size'] >= 0.01) & (df['p53 concentration'] >= 0.01))
+df = df.astype(np.float).mask(m)
 selected_lines = df.dropna()
+```
+
+11. **Vous travaillez dans une banque et vous devez analyser le fichier de transaction transactions.csv qui a été mis à disposition dans votre environnement. Charger le fichier transactions.csv dans le dataframe df. Calculer le solde entre montant reçus et envoyés de chaque personne  et stocker le resultat dans la variable soldes.Le fichier contient les colonnes : account_sender_name, country_sender,  account_receiver_name, country_receiver, datetime_timestamp, amount**
+
+```python
+import pandas as pd
+
+df = pd.read_csv('transactions.csv')
+tot_rcv = df.groupby(['account_receiver_name'])['amount'].sum()
+tot_snd = df.groupby(['account_sender_name'])['amount'].sum()
+soldes = tot_rcv.subtract(tot_snd)
 ```
