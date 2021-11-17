@@ -106,5 +106,10 @@ def differences(values):
 13. **2 arrays a et b de dimensions (9,16) ont été crées dans votre environnement. A l'aide de la méthode stack de numpy: Stackez les ensemble pour obtenir une variable X de dimensions (9,16,2). Une fois X validé, créez une variable X2 de dimension (2,9,16) en vous servant uniquement de X ou de variables tampons. Pas a ni b. Faites en sorte que les variables de a soit toujours placées avant celles de b, peu importe la dimension.**
 
 ```python
+import numpy as np
 
+a = np.arange(9*16).reshape(9,16)
+b = np.zeros(9*16).reshape(9,16)
+X = np.stack((a,b), axis=-1)
+X2 = np.array([X[:,:,0],X[:,:,1]])
 ```
