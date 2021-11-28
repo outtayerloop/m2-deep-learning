@@ -254,4 +254,119 @@ throughout time. It introduces the notion of **sequential memory** (similar to s
 
 - Each letter typed induces the prediction of a new letter that would be typed by the user, based on the frequency of its appearance. For ex here, typing the letter "f" would induce predicting the letter "e" to be typed by the user as the letter "e" had a big frequency among the letter sequences in the training of the RNN.
 
-*Drawbacks* : short-term memory caused by the **vanishing gradient problem**
+*Drawbacks* : short-term memory caused by the **vanishing gradient problem (VGP)**, as the RNN processes more data, it has more trouble retaining information from previous steps. It comes from the nature of back propagation which adjusts the weights by calculating the gradient of each node in the NN, the bigger the gradient, the bigger the adjustments are and vice-versa. The problem is, in RNNs, back propagation works by calculating the gradient of a node from the gradient of the previous one, which means if the previous gradient was small, then it would cause the next gradients to be shrinked exponentially, leading to the vanishing gradient problem with no adjustment made to the RNN and thus short-term memory.
+
+![](images/rnn_4.JPG)
+
+![](images/rnn_5.JPG)
+
+![](images/rnn_6.JPG)
+
+### Alternatives to RNN
+
+- **LSTM (Long Short Term Memory)**
+
+- **GRNN(Gated RNN)**
+
+- Both are able to learn long-term dependencies using a mechanism called **gates** which are different **tensor operations** that learn information that can learn what information to add or remove to the hidden state of the **feedback loop**.
+
+- Main difference between GRNN and LSTM : GRNN has 2 gates to control its memory (**update gate** and **reset gate**) whereas LSTMs have 3 gates (**update gate**, **reset gate** and **forget gate**). The update gate is the input gate, the reset is the output gate.
+
+- RNNs work well with projects that involve sequences of data that change over time
+
+- Applications of RNNS :
+  - NLP (Natural Language Processing)
+  - Sentiment analysis
+  - DNA Sequence classification
+  - Speech recognition
+  - Language translation
+
+### CNN (Convolutional Neural Network)
+
+- Designed for specific tasks like image classification and also for image, video and audio processing
+
+- Architecture : like the fully-connected feed forward NN, CNNs are composed of an input layer, several hidden layers and an output layer
+
+- CNN hidden layers :
+  - Convolutional layers
+  - Pooling layers
+  - Fully-connected layers
+  - Normalization layers
+
+- CNN input : 2D neuron that corresponds for example to the pixels of an image
+
+- CNN output : typically 1D
+
+- **Convolution** : extract visual features in chunks by multiplying each block of the image matrix by a **kernel matrix** (filter)
+
+Convolution of 2 functions f and g :
+![](images/cnn_1.JPG)
+It is the dot product of the input function and the kernel function (produit scalaire)
+
+- **Pooling** :  sub-sampling / down-sampling, it is the next step in a CNN after the convolution. Its goal is to reduce the number of neurons in subsequent layers to retain the most important information
+  - **Max Pooling** : picking up the max value of the selected region
+  ![](images/cnn_2.JPG)
+  - **Min Pooling** : same but with the min value 
+
+- **Image classification steps** :
+  - Take a 2D image which is a 2D matrix of pixels with typically 3 color channels (RGB)
+  - We use a convolution layer with multiple filters to create a 2D feature matrix as an output for each filter
+  - We then pool the results to reduce and down sample the feature matrix for each filter in the convolutional layer
+  - We typically repeat the convolution and the pooling steps multiple times using previous features as the input
+  - We then add a few fully-connected hidden layers to help classify the image
+  - Finally we produce a classification prediction in the output layer
+
+- Applications of CNNs :
+  - Computer vision++
+  - Image recognition
+  - Image processing
+  - Image segmentation
+  - Video analysis
+  - NLP (Natural Language Processing)
+
+## Deep Learning Projects
+
+1. **Gathering Data** : picking the right data is key
+![](images/deep_learning_project_1.JPG)
+
+Quality also matters :
+
+- How common are labelling errors ? => if the data is labelled by humans, there might be some mistakes
+- Noisy features ? => is it completely accurate ? although we will never be able to purge data from all of its noise
+- **Useful repos for dataset retrieval** :
+  - UCI Machine Learning repository
+  - Kaggle
+  - Google Dataset search
+  - Reddit
+  - Create your own dataset with web scrapers like beautiful soup
+
+- **Preprocessing the data** : 
+  - Splitting the dataset into 3 parts : train, test (when it is ready to use, for testing purposes), validation (evaluation of the model). The tuning of hyperparameters is done via the feedback received from the validation subset. The 3 dataset subsets must be very similar to each other. Models with very few hyperparameters will be easy to validate and tune, therefore the size of the validation set could be reduced, however if the model has many hyperparameters it is the opposite and cross-validation will have to be considered. If no hyperparameter is set, then no validation set is required at all. The train-test-validation-split ratio is specific to the use case
+  ![](images/deep_learning_project_2.JPG)
+  - **Cross-validation** : it allows avoiding overfitting, and K-fold cross validation is one of the most popular implementation used. 
+  ![](images/deep_learning_project_3.JPG)
+  - If working on a time series dataset, a frequent technique is to split the data by time but it works best for very large datasets (~10 millions examples)
+  ![](images/deep_learning_project_4.JPG)
+  - **Formatting** : data from database to csv file for example
+  - **Missing data** : Nan or Null, most algorithms can't handle them. Multiple methods to deal with them :
+    - Eliminating the features with missing values : the risk is to delete relevant information
+    - Imputing the missing values : mean value for example
+  - **Sampling data** : by using a small sample of the dataset (to avoid large computations and memory requirements)
+  - **Imbalanced data** : the model will be automatically biased to the majority class in classification, for this, we use **down-sampling** and **up-weighting** => reducing the majority class by a sampling factor and adding example weights of that factor to the down-sampled class (the majority class). If we down sample the majority class by a factor of 10, then the example weights we add to that class should be 10. This leads to **faster convergence** as we will see the minority class more often, also we will spend less disk space by storing less majority class samples, also, the dataset is in similar ratio as we upweighted the majority class after down sampling it to see more of the minority class rather than almost only the majority class
+  ![](images/deep_learning_project_5.JPG)
+  - **Feature scaling** : normalization (range between 0 and 1) with Min-max scaling to each feature, standardization (standard normal distribution whoch means 0 mean and unit variance / standard deviation). It also makes the algorithms less sensitive to outlier values !
+
+- **Training the model** : 
+![](images/deep_learning_project_6.JPG)
+
+- **Evaluating the model** : the evaluation process allows us to test a model against a set of data that it has never seen before and this is meant to be representative of the real world, the model will be evaluated on the **validation set**
+
+- **Optimizing** : 
+  - **Hyperparameter tuning** : increase the number of epochs for example, by adjusting the learning rate. Initial conditions can play a large role in determining the model's outcome
+  - **Addressing overfitting** : 2 principal ways to solve it => getting more data or use regularization. Getting more data is usually the better solution as a model traine with more data will naturally generalize better. Reducing the model's learnable parameters of the model and lowering the capacity of the NN. However, by lowering its capacity, we force the model to learn patterns that matter or that will minimize the loss but reducing its capacity too much will lead to **underfitting** as the model will not be able to learn the relevant patterns. All these solutions must be tested and evaluating to see if it increases the model's performances. To address overfitting, we can also apply **weight regularization** by constrainting the complexity of the network by forcing it to take only small values, therefore by regularizing the distribution of weight values. This is done by adding to loss function of the network a **cost associated with having larger weights**. This cost comes in 2 ways :
+    - **L1 regularization** : adds a cost with regards to the of the weight coefficient or the L1 norm of the weight
+    - **L2 regularization** : adds a cost with regards to the squared value of the weight coefficient that is the L2 norm of the weight.
+  - Another way of addressing overfitting is **data augmentation** : we need to have a lot of data for a model to perform in a satisfactory way but when working with images we do not always have more data to add. Data augmentation then relies on increasing the dataset artificially from already existing data by for example flipping the images of the y axis, flipping the images of the x axis, blind blurring them, zooming on them. It shows the model more than what meets the eye, it exposes the model to more than the existing data so that in testing it will automatically perform better because it has seen images represented in almost every single form
+  - **Dropout** : randomly drop out some neurons of the NN and reduce co-dependencies associated with them. It refers to the ignoring of neurons during the training phase of a randomly chosen set of neurons, therefore these neurones are not considered during the forward or backward pass concerned by this phase. Why do we need it ? Because a fully connected layer occupies most of the parameters and hence neurons develop a co-dependency amongst each other during training which curbs the individual power of each neuron and which ultimately leads to overfitting on the training data. Dropout is a good way to reduce overfitting. 
+
+
