@@ -1,0 +1,30 @@
+Cyclical Learning Rate :
+
+1) Cycle length (stepsize = cycle length / 2)
+2) Min & Max lr
+
+opt lr = base or lower lr
+cycle length = 4000 iterations (stepsize = 2000 = cycle length / 2)
+max lr
+
+triangle2 => lr diff / 2 à la fin de chaque cycle
+
+exp_range => lr entre min et max qui diminuent par gamma^iteration
+
+1) Cycle length ?
+Ex tp :
+10 epochs
+60 000 images
+batch size = 32 (par défaut dans keras)
+=> 60 000 / 32 = 1875 batch/iterations par epoch (avec 32 images / batch)
+=> stepsize = 2 à 10 * epoch
+=> arrêter le train à la fin d'un cycle
+
+2) Min & Max lr ?
+
+LR range test :
+monter le lr lineairement entre 0 et max lr (0.02 par ex) et regarder l'accuracy
+
+ it is best to stop
+training at the end of a cycle, which is when the learning
+rate is at the minimum value and the accuracy peaks.
