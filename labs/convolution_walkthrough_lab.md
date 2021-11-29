@@ -148,4 +148,6 @@ plt.imshow(conv_cv2, cmap="gray")
 
 ![](conv_opencv_filter2d.JPG)
 
-8. 
+8. **What is the link between fourier transform and convolution ?**
+
+The Fourier transform allows simplifying the convolution integral formula by transforming the functions involved (f*g). It induces less computing and works by Fourier transforming the whole convolution product, which leads to a product of the Fourier transform of the 2 functions f and g instead of an integral.
