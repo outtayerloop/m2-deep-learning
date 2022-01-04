@@ -21,3 +21,5 @@
 - **epochs** : nb de fois que modele verra le dataset en entier
 
 - **Descente de gradient** : pour mettre à jour valeurs de theta (coeffs) pour minimiser la fonction de coût 
+
+- **GPU** : très utilisé dans l'entraînement des GANs parce que ça repose bcp sur des opérations matricielles
