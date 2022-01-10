@@ -121,10 +121,18 @@ model.compile(optimizer='sgd', loss='mse')
 X_train, y_train = load_data()
 print(X_train)
 print(X_train.shape)
-seq_len = X_train.shape[0]
-vect_dim = X_train.shape[1]
+ex_count = X_train.shape[0]
+seq_len = X_train.shape[1]
 
-X_train = X_train.reshape(seq_len, vect_dim, -1)
+X_train = X_train.reshape(ex_count, seq_len, -1)
+
+"""
+Les LSTMs attendent une shape 3D, 
+or la shape initiale de X_train était (5,4) 
+donc on doit reshape 
+en laissant la 3eme dimension être dynamiquement déterminée 
+(d'où le -1 en 3eme position du reshape).
+"""
 ```
 
 Les LSTMs attendent une shape 3D, or la shape initiale de X_train était (5,4) donc on doit reshape en laissant la 3eme dimension être dynamiquement déterminée (d'où le -1 en 3eme position du reshape).
@@ -137,9 +145,12 @@ from tensorflow.keras.layers import LSTM, Dense, Flatten
 
 
 X_train, y_train = load_data()
-seq_len = X_train.shape[0]
-vect_dim = X_train.shape[1]
-X_train = X_train.reshape(seq_len, vect_dim, -1)
+print(X_train)
+print(X_train.shape)
+ex_count = X_train.shape[0]
+seq_len = X_train.shape[1]
+
+X_train = X_train.reshape(ex_count, seq_len, -1).astype(float)
 
 model = Sequential()
 model.add(LSTM(units=10))
@@ -151,3 +162,33 @@ model.compile(optimizer='sgd', loss='mse')
 model.fit(X_train, y_train, epochs=2)
 ```
 
+9. **Dans cet exercice on va charger une série temporelle issue d'un fichier. Charger la série temporelle timeseries1.csv dans un dataframe df. Afficher le dataframe, vous verrez plusieurs colonnes.Reprendre le réseau de neurone précédent et faire en sorte qu'il apprenne à prédire x1 en fonction des autres colonnes.**
+
+```python
+import pandas as pd
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Flatten
+
+
+df = pd.read_csv('timeseries1.csv')
+print(df)
+X_train = df.iloc[:, :-1].values
+y_train = df.iloc[:, -1].values
+print(X_train)
+print(X_train.shape)
+ex_count = X_train.shape[0]
+seq_len = X_train.shape[1]
+X_train = X_train.reshape(ex_count, seq_len, -1).astype(float)
+print(X_train.shape)
+
+model = Sequential()
+model.add(LSTM(units=10))
+model.add(Flatten())
+model.add(Dense(units=1, activation='linear'))
+
+model.compile(optimizer='sgd', loss='mse')
+
+model.fit(X_train, y_train, epochs=2)
+```
+
+10. 
