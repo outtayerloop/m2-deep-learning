@@ -52,10 +52,16 @@ norm_t1 = torch.norm(t1)
 ```python
 import torch
 
+# Pour savoir que ca existe
 def pytorch_relu(vector):
     m = torch.nn.ReLU(inplace=True)
     m(vector)
     return vector
+
+# Ce qui etait demande
+def pytorch_relu(vector):
+    zero_tensor = torch.zeros_like(vector)
+    return torch.max(zero_tensor, vector)
 ```
 
 6. **Faire une fonction pytorch_softmax(activation_tensors) qui transforme le tensor 1D activation_tensors via la fonction softmax**
@@ -64,10 +70,15 @@ def pytorch_relu(vector):
 import torch
 
 
+# Pour savoir que ca existe
 def pytorch_softmax(activation_tensors):
     m = torch.nn.Softmax()
     output = m(activation_tensors)
     return output
+
+# Ce qui etait demande
+def pytorch_softmax(activation_tensors):
+    return torch.exp(activation_tensors) / torch.sum(torch.exp(activation_tensors))
 ```
 
 7. **Faire une fonction pytorch_sigmoid(activation_tensors) qui calcule la sigmoid pour chaque valeur d'un tensor torch**
@@ -76,10 +87,15 @@ def pytorch_softmax(activation_tensors):
 import torch
 
 
+# Pour savoir que ca existe
 def pytorch_sigmoid(activation_tensors):
     m = torch.nn.Sigmoid()
     output = m(activation_tensors)
     return output
+
+# Ce qui etait demande
+def pytorch_sigmoid(activation_tensors):
+    return 1 / (1 + torch.exp(-activation_tensors))
 ```
 
 8. **Faire une fonction linear_regression_prediction(thetas, x) qui calcule la sortie d'une régression linéaire.On supposera que x[0] = 1 pour que x et thetas soient de même taille**
@@ -88,10 +104,15 @@ def pytorch_sigmoid(activation_tensors):
 import torch
 
 
+# Pour savoir que ca existe
 def linear_regression_prediction(thetas, x):
     print(x)
     print(thetas)
     m = torch.nn.Linear(x.shape[0], 1, bias=False)
     m.weight.data = thetas
     return m(x)
+
+# Ce qui etait demande
+def linear_regression_prediction(thetas, x):
+    return torch.sum(thetas * x)
 ```
