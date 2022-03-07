@@ -169,4 +169,22 @@ class SGD(torch.optim.Optimizer):
             param.grad.data = torch.zeros_like(param.grad)
 ```
 
-8. 
+8. **faire une fonction simple_forward(x) qui calcule la formule suivante : z = exp(w0 * x ) * w1. il faudra renvoyer via une liste les quantité w0 * x, exp (w0*x) et z. Faire une fonction simple_backward(x) qui à partir des valeurs retournée par simple_forward, renvoie les dérivées partielles de z par rapport à w0 et w1**
+
+```python
+import numpy as np
+import torch
+
+
+def simple_forward(x, w0, w1):
+    base_w0_x = w0 * x
+    w0_x_exp = np.exp(base_w0_x)
+    z = w0_x_exp * w1
+    return [base_w0_x, w0_x_exp, z]
+    
+    
+def simple_backward(base_w0_x, w0_x_exp, z):
+    dw0 = np.exp(w0 * x ) * w1
+    dw1 = np.exp(w0 * x ) * 1
+    return (dw0, dw1)
+```
